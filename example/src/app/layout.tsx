@@ -30,7 +30,7 @@ export default function RootLayout({
                 <Link href={"/"}>Home</Link>
               </nav>
             </div>
-            <ReactStaticSearch searchBoxType="inline" />
+            <ReactStaticSearch />
           </div>
         </header>
         {children}
