@@ -279,13 +279,13 @@ const SearchModal: React.FC<{
           onChange={(e) => onSearch(e.target.value)}
           autoFocus={true}
         />
+        <ResultWithError
+          config={config}
+          isError={isError}
+          loading={loading}
+          results={results}
+        />
       </div>
-      <ResultWithError
-        config={config}
-        isError={isError}
-        loading={loading}
-        results={results}
-      />
     </div>,
     document.body
   );
