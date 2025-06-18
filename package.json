@@ -1,0 +1,51 @@
+{
+  "name": "react-static-search",
+  "version": "1.0.0",
+  "description": "A powerful react search based on pagefind with beautiful UI",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faraasat/react-static-search.git"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./dist/*.css": "./dist/*.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run build:cjs && npm run build:esm && npm run copy-css",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:esm": "tsc --project tsconfig.esm.json",
+    "copy-css": "cp ./src/*.css dist/",
+    "release": "standard-version"
+  },
+  "keywords": [
+    "react",
+    "react component",
+    "nextjs",
+    "next.js",
+    "react search",
+    "pagefind",
+    "static search"
+  ],
+  "author": "Farasat Ali <63093876+faraasat@users.noreply.github.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "standard-version": "^9.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
