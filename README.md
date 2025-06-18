@@ -1,1 +1,1 @@
-# 🍪 React Static Search Based on Pagefind
+# 🔎 React Static Search Based on Pagefind
