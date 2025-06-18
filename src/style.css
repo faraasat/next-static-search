@@ -10,6 +10,7 @@
   position: relative;
   font-family: sans-serif;
   color: rgb(var(--rstse-primary));
+  position: relative;
 }
 
 .rstse__search_bar_input {
@@ -23,7 +24,7 @@
   color: rgb(var(--rstse-primary));
 }
 
-.rstse__search_bar > div {
+.rstse__search_bar_div {
   position: absolute;
   right: 0;
   transform: translateX(-10px);
@@ -128,6 +129,7 @@
 .rstse__search_result_pane > div {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .rstse__search_result_pane > div > a {
@@ -181,6 +183,22 @@
 
 .rstse-animate-fade-in {
   animation: rstse-animate-fade-in 0.4s linear;
+}
+
+.rstse__search_bar_inline {
+  position: absolute;
+  z-index: 99999;
+  top: 55px;
+  min-width: 250px;
+  width: 95vw;
+  max-width: 600px;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  border-radius: 8px;
+  right: -10px;
+  min-height: 400px;
+  height: 75%;
+  overflow: hidden;
 }
 
 @keyframes rstse-animate-fade-in {

@@ -14,6 +14,7 @@ const defaultConfig = {
     "There is an error loading the search result. Maybe you are running development build or the application can't access the results.",
   notFoundMessage:
     "No result found for this query. Try with some other keywords.",
+  searchBoxType: "modal",
 } satisfies IReactStaticSearch;
 
 const SearchBar: React.FC<{
@@ -35,8 +36,12 @@ const SearchBar: React.FC<{
   };
 
   return (
-    <div className={`rstse__search_bar ${config?.searchClassName || ""}`}>
+    <div
+      className={`rstse__search_bar ${config?.searchClassName || ""}`}
+      id="rstse__search_bar_id"
+    >
       <input
+        id="rstse__search_bar_main_id"
         className="rstse__search_bar_input"
         type="text"
         placeholder={config?.placeholder || ""}
@@ -44,7 +49,7 @@ const SearchBar: React.FC<{
         onChange={(e) => onSearch(e.target.value)}
       />
       {isMac != null && (
-        <div>
+        <div className="rstse__search_bar_div">
           <span className="rstse__search_bar_keys">
             {getKey(
               isMac,
@@ -193,7 +198,7 @@ const ResultPane: React.FC<{
         <React.Fragment>
           {results?.map((res, i) => {
             return (
-              <React.Fragment key={res?.meta?.title || i}>
+              <React.Fragment key={i}>
                 <h3>{res.meta.title}</h3>
                 <div>
                   {res.sub_results.map((sub_res) => {
@@ -217,6 +222,31 @@ const ResultPane: React.FC<{
         </div>
       )}
     </div>
+  );
+};
+
+const ResultWithError: React.FC<{
+  config: IReactStaticSearch;
+  isError: boolean;
+  loading: boolean;
+  results: Array<IPagefindResultData>;
+}> = ({ config, isError, loading, results }) => {
+  return (
+    <React.Fragment>
+      {isError ? (
+        <div className="rstse__search_result">
+          <div className="rstse__search_result_err">{config.errorMessage}</div>
+        </div>
+      ) : (
+        <div className="rstse__search_result">
+          {loading ? (
+            <LoadingScreen />
+          ) : (
+            <ResultPane config={config} results={results} />
+          )}
+        </div>
+      )}
+    </React.Fragment>
   );
 };
 
@@ -249,22 +279,13 @@ const SearchModal: React.FC<{
           onChange={(e) => onSearch(e.target.value)}
           autoFocus={true}
         />
-        {isError ? (
-          <div className="rstse__search_result">
-            <div className="rstse__search_result_err">
-              {config.errorMessage}
-            </div>
-          </div>
-        ) : (
-          <div className="rstse__search_result">
-            {loading ? (
-              <LoadingScreen />
-            ) : (
-              <ResultPane config={config} results={results} />
-            )}
-          </div>
-        )}
       </div>
+      <ResultWithError
+        config={config}
+        isError={isError}
+        loading={loading}
+        results={results}
+      />
     </div>,
     document.body
   );
@@ -281,8 +302,10 @@ export const ReactStaticSearch: React.FC<Partial<IReactStaticSearch>> = (
     setLoading(false);
   }, []);
 
-  const { isMac, isMounted, isOpen, setIsOpen } =
-    useInitialMounting(clearSearch);
+  const { isMac, isMounted, isOpen, setIsOpen } = useInitialMounting(
+    clearSearch,
+    config.searchBoxType
+  );
   const { isError, results, loading, onSearch, setSearch, search, setLoading } =
     usePagefind();
 
@@ -294,7 +317,7 @@ export const ReactStaticSearch: React.FC<Partial<IReactStaticSearch>> = (
         onSearch={onSearch}
         isMac={isMac}
       />
-      {isMounted && (
+      {config.searchBoxType == "modal" && isMounted && (
         <SearchModal
           isOpen={isOpen}
           search={search}
@@ -305,6 +328,23 @@ export const ReactStaticSearch: React.FC<Partial<IReactStaticSearch>> = (
           results={results}
         />
       )}
+      {config.searchBoxType == "inline" &&
+        search.length > 0 &&
+        isMounted &&
+        createPortal(
+          <div
+            className="rstse__search_bar_inline"
+            id="rstse__search_bar_inline_id"
+          >
+            <ResultWithError
+              config={config}
+              isError={isError}
+              loading={loading}
+              results={results}
+            />
+          </div>,
+          document.getElementById("rstse__search_bar_id")
+        )}
     </React.Fragment>
   );
 };

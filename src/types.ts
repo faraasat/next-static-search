@@ -65,4 +65,5 @@ export interface IReactStaticSearch {
   searchBoxTitle?: string;
   errorMessage?: string;
   notFoundMessage?: string;
+  searchBoxType: "modal" | "inline"
 }

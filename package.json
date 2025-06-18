@@ -1,10 +1,10 @@
 {
-  "name": "react-static-search",
+  "name": "next-static-search",
   "version": "1.0.0",
   "description": "A powerful react search based on pagefind with beautiful UI",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/faraasat/react-static-search.git"
+    "url": "git+https://github.com/faraasat/next-static-search.git"
   },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

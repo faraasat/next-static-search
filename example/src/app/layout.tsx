@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
-import { ReactStaticSearch } from "react-static-search";
+import { ReactStaticSearch } from "next-static-search";
 
 import "./globals.css";
 
-import "react-static-search/dist/style.min.css";
+import "next-static-search/dist/style.min.css";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Example for react-static-search",
-  description: "Example for react-static-search",
+  title: "Example for next-static-search",
+  description: "Example for next-static-search",
 };
 
 export default function RootLayout({
@@ -23,12 +23,14 @@ export default function RootLayout({
         <header className="flex justify-center items-center w-full py-4 bg-gray-300">
           <div className="flex items-center justify-between gap-12 container">
             <div className="flex items-center justify-center gap-8">
-              <Link href={"/"} className="font-bold text-2xl">React Static Search</Link>
+              <Link href={"/"} className="font-bold text-2xl">
+                React Static Search
+              </Link>
               <nav>
                 <Link href={"/"}>Home</Link>
               </nav>
             </div>
-            <ReactStaticSearch />
+            <ReactStaticSearch searchBoxType="inline" />
           </div>
         </header>
         {children}

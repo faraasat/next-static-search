@@ -26,10 +26,13 @@ const usePagefind = () => {
     async function loadPagefind() {
       if (typeof window.pagefind === "undefined") {
         try {
-          const pagefind = await import(
-            // @ts-expect-error
-            /* webpackIgnore: true */ "/_next/static/pagefind/pagefind.js"
-          );
+          const pagefindPath = "/_next/static/pagefind/pagefind.js";
+          const res = await fetch(pagefindPath, { method: "HEAD" });
+
+          if ((await res.text()).includes("<!DOCTYPE html>"))
+            throw Error("html file");
+
+          const pagefind = await import(/* webpackIgnore: true */ pagefindPath);
 
           window.pagefind = pagefind;
 

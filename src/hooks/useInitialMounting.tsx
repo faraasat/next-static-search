@@ -1,9 +1,18 @@
 import React from "react";
 
-const useInitialMounting = (clearSearch: () => void) => {
+const useInitialMounting = (
+  clearSearch: () => void,
+  searchBoxType: "modal" | "inline"
+) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [isMac, setIsMac] = React.useState<boolean | null>(null);
   const [isMounted, setIsMounted] = React.useState<boolean>(false);
+
+  const handleSearchClose = (ev: MouseEvent) => {
+    if(searchBoxType == "inline") {
+      // console.log(ev)
+    }
+  };
 
   const handleKeyDown = React.useCallback((e: KeyboardEvent) => {
     if ((e?.ctrlKey || e?.metaKey) && e.key === "k") {
@@ -11,14 +20,24 @@ const useInitialMounting = (clearSearch: () => void) => {
       setIsOpen(true);
 
       let timeout = setTimeout(() => {
-        document.getElementById("rstse__search_bar_input_id")?.focus();
+        document
+          .getElementById(
+            searchBoxType == "inline"
+              ? "rstse__search_bar_main_id"
+              : "rstse__search_bar_input_id"
+          )
+          ?.focus();
         clearTimeout(timeout);
       }, 50);
     }
   }, []);
 
   const handlePortalClose = React.useCallback((ev: MouseEvent | null) => {
-    if (ev && (ev as any).target.id == "rstse__search_portal_id") {
+    if (
+      searchBoxType == "modal" &&
+      ev &&
+      (ev as any).target.id == "rstse__search_portal_id"
+    ) {
       clearSearch();
     }
   }, []);
@@ -31,9 +50,11 @@ const useInitialMounting = (clearSearch: () => void) => {
     setIsMac(isMac ? true : false);
 
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("click", handleSearchClose);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("click", handleSearchClose);
     };
   }, []);
 
