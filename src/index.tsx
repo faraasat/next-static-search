@@ -188,25 +188,39 @@ const LoadingScreen = () => {
   );
 };
 
+const pagesToIgnore = ["404", "500"];
+
+const filterPages = (x: IPagefindResultData) => {
+  pagesToIgnore.some((y) => x?.meta?.title == y);
+};
+
 const ResultPane: React.FC<{
   config: IReactStaticSearch;
   results: Array<IPagefindResultData>;
 }> = ({ config, results }) => {
+  const filteredResult = results?.filter(filterPages);
   return (
     <div className="rstse__search_result_pane">
-      {results.length > 0 ? (
+      {filteredResult?.length > 0 ? (
         <React.Fragment>
-          {results?.map((res, i) => {
+          {filteredResult.map((res, i) => {
             return (
               <React.Fragment key={i}>
                 <h3>{res.meta.title}</h3>
                 <div>
                   {res.sub_results.map((sub_res) => {
+                    const url = sub_res.url
+                      .replace("/_next/static/server/app", "")
+                      .replace("/server/app", "")
+                      .replace(".html", "");
+
                     return (
-                      <a href={sub_res.url} key={sub_res.title}>
+                      <a href={url} key={sub_res.title}>
                         <h4>{sub_res.title}</h4>
                         <p
-                          dangerouslySetInnerHTML={{ __html: sub_res.excerpt }}
+                          dangerouslySetInnerHTML={{
+                            __html: sub_res.excerpt,
+                          }}
                         ></p>
                       </a>
                     );

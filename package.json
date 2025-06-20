@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm && npm run minify-css && npm run minify-js",
+    "build": "npm run build:cjs && npm run build:esm && npm run minify-css",
     "build:cjs": "tsc --project tsconfig.cjs.json",
     "build:esm": "tsc --project tsconfig.esm.json",
     "minify-css": "css-minify -d ./src -o dist",

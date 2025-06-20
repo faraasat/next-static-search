@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
+import Link from "next/link";
+
 import { ReactStaticSearch } from "next-static-search";
 
 import "./globals.css";
 
 import "next-static-search/dist/style.min.css";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Example for next-static-search",

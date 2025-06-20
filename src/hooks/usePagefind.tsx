@@ -27,10 +27,12 @@ const usePagefind = () => {
       if (typeof window.pagefind === "undefined") {
         try {
           const pagefindPath = "/_next/static/pagefind/pagefind.js";
-          const res = await fetch(pagefindPath, { method: "HEAD" });
+          const res = await fetch(pagefindPath, {
+            method: "HEAD",
+            cache: "no-store",
+          });
 
-          if ((await res.text()).includes("<!DOCTYPE html>"))
-            throw Error("html file");
+          if (res.status == 404) throw Error("file not found");
 
           const pagefind = await import(/* webpackIgnore: true */ pagefindPath);
 
