@@ -57,7 +57,7 @@ interface IPagefindResults {
   query: string;
 }
 
-export interface IReactStaticSearch {
+export interface INextStaticSearch {
   placeholder?: string;
   searchClassName?: string;
   macSymbol?: React.JSX.Element | string;

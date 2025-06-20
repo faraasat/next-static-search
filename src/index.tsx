@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 
 import { useInitialMounting, usePagefind } from "./hooks";
 
-import { IPagefindResultData, IReactStaticSearch } from "./types";
+import { IPagefindResultData, INextStaticSearch } from "./types";
 
 const defaultConfig = {
   placeholder: "🚀 Search this Site...",
@@ -15,10 +15,10 @@ const defaultConfig = {
   notFoundMessage:
     "No result found for this query. Try with some other keywords.",
   searchBoxType: "modal",
-} satisfies IReactStaticSearch;
+} satisfies INextStaticSearch;
 
 const SearchBar: React.FC<{
-  config: IReactStaticSearch;
+  config: INextStaticSearch;
   search: string;
   onSearch: (s: string) => Promise<void>;
   isMac: boolean | null;
@@ -195,7 +195,7 @@ const filterPages = (x: IPagefindResultData) => {
 };
 
 const ResultPane: React.FC<{
-  config: IReactStaticSearch;
+  config: INextStaticSearch;
   results: Array<IPagefindResultData>;
 }> = ({ config, results }) => {
   const filteredResult = results?.filter(filterPages);
@@ -240,7 +240,7 @@ const ResultPane: React.FC<{
 };
 
 const ResultWithError: React.FC<{
-  config: IReactStaticSearch;
+  config: INextStaticSearch;
   isError: boolean;
   loading: boolean;
   results: Array<IPagefindResultData>;
@@ -267,7 +267,7 @@ const ResultWithError: React.FC<{
 const SearchModal: React.FC<{
   isOpen: boolean;
   search: string;
-  config: IReactStaticSearch;
+  config: INextStaticSearch;
   onSearch: (s: string) => Promise<void>;
   isError: boolean;
   loading: boolean;
@@ -305,7 +305,7 @@ const SearchModal: React.FC<{
   );
 };
 
-export const ReactStaticSearch: React.FC<Partial<IReactStaticSearch>> = (
+export const NextStaticSearch: React.FC<Partial<INextStaticSearch>> = (
   props
 ) => {
   const config = { ...defaultConfig, ...props };

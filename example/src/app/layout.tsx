@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import Link from "next/link";
 
-import { ReactStaticSearch } from "next-static-search";
+import { NextStaticSearch } from "next-static-search";
 
 import "./globals.css";
 
@@ -31,7 +31,7 @@ export default function RootLayout({
                 <Link href={"/"}>Home</Link>
               </nav>
             </div>
-            <ReactStaticSearch />
+            <NextStaticSearch />
           </div>
         </header>
         {children}

@@ -63,7 +63,7 @@ Add following command to your package.json as `next-static-search` rely on files
 Import the component where you want this search:
 
 ```jsx
-import { ReactStaticSearch } from "next-static-search";
+import { NextStaticSearch } from "next-static-search";
 
 import "./globals.css";
 
@@ -78,7 +78,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header>
-          <ReactStaticSearch />
+          <NextStaticSearch />
         </header>
         {children}
       </body>
@@ -90,7 +90,7 @@ export default function RootLayout({
 ## 🔧 Config object structure
 
 ```ts
-interface IReactStaticSearch {
+interface INextStaticSearch {
   placeholder?: string;
   searchClassName?: string;
   macSymbol?: React.JSX.Element | string;
