@@ -28,7 +28,7 @@ export default function Post1() {
       <p>
         Just install{" "}
         <code className="bg-gray-100 px-1 rounded">next-static-search</code>,
-        configure your output folder, and you’re ready to go. It seamlessly
+        configure your output folder, and you are ready to go. It seamlessly
         generates a searchable index during build time.
       </p>
 

@@ -9,7 +9,7 @@ export default function Post2() {
       </p>
 
       <p>
-        Whether you’re building a portfolio, a tech blog, or a documentation
+        Whether you are building a portfolio, a tech blog, or a documentation
         site, search is crucial. But setting up Algolia or ElasticSearch can be
         overkill for simple static websites.
       </p>
