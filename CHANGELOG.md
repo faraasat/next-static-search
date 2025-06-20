@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.9 (2025-06-20)
+
+
+### Bug Fixes
+
+* update import names for library ([7aeec6d](https://github.com/faraasat/next-static-search/commit/7aeec6d85cca987af80729dbfa1053771cdec0cb))
+
 ### 1.0.8 (2025-06-20)
 
 ### 1.0.7 (2025-06-20)
