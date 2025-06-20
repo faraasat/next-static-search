@@ -21,20 +21,34 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm && npm run minify-css",
+    "build": "npm run build:cjs && npm run build:esm && npm run minify-css && npm run minify-js",
     "build:cjs": "tsc --project tsconfig.cjs.json",
     "build:esm": "tsc --project tsconfig.esm.json",
     "minify-css": "css-minify -d ./src -o dist",
+    "minify-js": "find dist -name '*.js' -exec terser {} --compress --mangle --output {} \\;",
     "release": "standard-version"
   },
   "keywords": [
     "react",
-    "react component",
     "nextjs",
     "next.js",
-    "react search",
+    "next static search",
     "pagefind",
-    "static search"
+    "static search",
+    "next export",
+    "full-text search",
+    "client-side search",
+    "jamstack search",
+    "next.js search",
+    "search index",
+    "search integration",
+    "nextjs blog",
+    "nextjs docs",
+    "next static site",
+    "search component",
+    "ssg",
+    "static site generator",
+    "seo-friendly search"
   ],
   "author": "Farasat Ali <63093876+faraasat@users.noreply.github.com>",
   "license": "MIT",
@@ -47,6 +61,7 @@
     "@types/react-dom": "^19.1.6",
     "css-minify": "^2.1.0",
     "standard-version": "^9.5.0",
+    "terser": "^5.43.1",
     "typescript": "^5.0.0"
   },
   "publishConfig": {

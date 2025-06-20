@@ -58,7 +58,7 @@ interface IPagefindResults {
 }
 
 export interface IReactStaticSearch {
-  placeholder: string;
+  placeholder?: string;
   searchClassName?: string;
   macSymbol?: React.JSX.Element | string;
   windowsSymbol?: React.JSX.Element | string;
