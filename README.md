@@ -2,8 +2,15 @@
 
 A lightweight, zero-config search solution for Next.js static sites, built on top of Pagefind. Easily integrate full-text, client-side search into your statically generated Next.js website without relying on external services.
 
-[![NPM](https://img.shields.io/npm/v/next-static-search.svg)](https://www.npmjs.com/package/next-static-search) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![npm download][download-image]][download-url]
+![npm version](https://img.shields.io/npm/v/next-static-search.svg)
+![package size minified](https://img.shields.io/bundlephobia/min/next-static-search?style=plastic)
+[![](https://data.jsdelivr.com/v1/package/npm/next-static-search/badge)](https://www.jsdelivr.com/package/npm/next-static-search)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+![total downloads](https://img.shields.io/npm/dt/next-static-search.svg)
+![total downloads per year](https://img.shields.io/npm/dy/next-static-search.svg)
+![total downloads per week](https://img.shields.io/npm/dw/next-static-search.svg)
+![total downloads per month](https://img.shields.io/npm/dm/next-static-search.svg)
 
 [download-image]: https://img.shields.io/npm/dm/next-static-search.svg
 [download-url]: https://npmjs.org/package/next-static-search
