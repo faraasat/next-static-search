@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.12 (2025-07-20)
+
+
+### Bug Fixes
+
+* filtering issue, updated readme and bundling ([6bf2efa](https://github.com/faraasat/next-static-search/commit/6bf2efa2bfc9f051b5d0d4146af32751c3cb664d))
+
 ### 1.0.11 (2025-07-19)
 
 ### 1.0.10 (2025-06-21)
