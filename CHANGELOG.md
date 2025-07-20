@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.13 (2025-07-20)
+
+
+### Bug Fixes
+
+* issue with exports ([c0f733c](https://github.com/faraasat/next-static-search/commit/c0f733c70467d23bd3df8d332ae79c3ad7f3ef51))
+
 ### 1.0.12 (2025-07-20)
 
 
