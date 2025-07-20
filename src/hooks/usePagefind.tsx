@@ -2,7 +2,10 @@ import React from "react";
 
 import { IPagefindResultData } from "../types";
 
-const usePagefind = () => {
+const importPageFind = async (path: string) =>
+  await new Function(`return import("${path}")`)();
+
+export const usePagefind = () => {
   const [search, setSearch] = React.useState<string>("");
   const [isError, setIsError] = React.useState<boolean>(false);
   const [results, setResults] = React.useState<Array<IPagefindResultData>>([]);
@@ -17,6 +20,7 @@ const usePagefind = () => {
   }, []);
 
   const rejectionHandler = (event: PromiseRejectionEvent) => {
+    console.log(event);
     if (event.reason?.message?.includes("Pagefind")) {
       catchErrors();
     }
@@ -26,22 +30,24 @@ const usePagefind = () => {
     async function loadPagefind() {
       if (typeof window.pagefind === "undefined") {
         try {
-          const pagefindPath = "/_next/static/pagefind/pagefind.js";
-          const res = await fetch(pagefindPath, {
+          const fullPath = `/_next/static/pagefind/pagefind.js`;
+          const res = await fetch(fullPath, {
             method: "HEAD",
             cache: "no-store",
           });
 
           if (res.status == 404) throw Error("file not found");
 
-          const pagefind = await import(/* webpackIgnore: true */ pagefindPath);
+          const pagefind = await importPageFind(fullPath);
 
           window.pagefind = pagefind;
 
-          await window.pagefind.preload().catch(() => {
+          await window.pagefind.preload().catch((e) => {
+            console.log(e);
             catchErrors();
           });
         } catch (e) {
+          console.log(e);
           catchErrors();
         }
       }

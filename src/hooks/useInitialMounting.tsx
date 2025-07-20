@@ -1,6 +1,6 @@
 import React from "react";
 
-const useInitialMounting = (
+export const useInitialMounting = (
   clearSearch: () => void,
   searchBoxType: "modal" | "inline"
 ) => {

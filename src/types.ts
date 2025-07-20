@@ -65,5 +65,6 @@ export interface INextStaticSearch {
   searchBoxTitle?: string;
   errorMessage?: string;
   notFoundMessage?: string;
-  searchBoxType: "modal" | "inline"
+  searchBoxType: "modal" | "inline";
+  pagesToIgnore?: Array<string>;
 }

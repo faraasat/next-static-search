@@ -6,7 +6,7 @@ import { NextStaticSearch } from "next-static-search";
 
 import "./globals.css";
 
-import "next-static-search/dist/style.min.css";
+import "next-static-search/dist/index.css";
 
 export const metadata: Metadata = {
   title: "Example for next-static-search",

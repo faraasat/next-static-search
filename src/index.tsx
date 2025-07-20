@@ -1,11 +1,12 @@
-"use client";
-
 import React from "react";
 import { createPortal } from "react-dom";
 
-import { useInitialMounting, usePagefind } from "./hooks";
+import { useInitialMounting } from "./hooks/useInitialMounting";
+import { usePagefind } from "./hooks/usePagefind";
 
 import { IPagefindResultData, INextStaticSearch } from "./types";
+
+import "./style.css"
 
 const defaultConfig = {
   placeholder: "🚀 Search this Site...",
@@ -15,6 +16,7 @@ const defaultConfig = {
   notFoundMessage:
     "No result found for this query. Try with some other keywords.",
   searchBoxType: "modal",
+  pagesToIgnore: ["404", "500"],
 } satisfies INextStaticSearch;
 
 const SearchBar: React.FC<{
@@ -188,17 +190,19 @@ const LoadingScreen = () => {
   );
 };
 
-const pagesToIgnore = ["404", "500"];
-
-const filterPages = (x: IPagefindResultData) => {
-  pagesToIgnore.some((y) => x?.meta?.title == y);
+const filterPages = (
+  x: Array<IPagefindResultData>,
+  pagesToIgnore: Array<string>
+) => {
+  return x.filter((y) => !pagesToIgnore.includes(y.meta.title));
 };
 
 const ResultPane: React.FC<{
   config: INextStaticSearch;
   results: Array<IPagefindResultData>;
 }> = ({ config, results }) => {
-  const filteredResult = results?.filter(filterPages);
+  const filteredResult = filterPages(results, config.pagesToIgnore);
+
   return (
     <div className="rstse__search_result_pane">
       {filteredResult?.length > 0 ? (
@@ -308,7 +312,14 @@ const SearchModal: React.FC<{
 export const NextStaticSearch: React.FC<Partial<INextStaticSearch>> = (
   props
 ) => {
-  const config = { ...defaultConfig, ...props };
+  const config = {
+    ...defaultConfig,
+    ...props,
+    pagesToIgnore: [
+      ...defaultConfig.pagesToIgnore,
+      ...(props.pagesToIgnore || []),
+    ],
+  };
 
   const clearSearch = React.useCallback(() => {
     setIsOpen(false);
