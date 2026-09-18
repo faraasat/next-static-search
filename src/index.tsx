@@ -192,7 +192,7 @@ const LoadingScreen = () => {
 
 const filterPages = (
   x: Array<IPagefindResultData>,
-  pagesToIgnore: Array<string>
+  pagesToIgnore: Array<string> = []
 ) => {
   return x.filter((y) => !pagesToIgnore.includes(y.meta.title));
 };
@@ -332,7 +332,15 @@ export const NextStaticSearch: React.FC<Partial<INextStaticSearch>> = (
     config.searchBoxType
   );
   const { isError, results, loading, onSearch, setSearch, search, setLoading } =
-    usePagefind();
+    usePagefind(config.pagefindPath, config.baseUrl);
+
+  // Resolved after mount: the target element is rendered by this component,
+  // so it does not exist during the first render pass.
+  const [inlineContainer, setInlineContainer] =
+    React.useState<HTMLElement | null>(null);
+  React.useEffect(() => {
+    setInlineContainer(document.getElementById("rstse__search_bar_id"));
+  }, [isMounted]);
 
   return (
     <React.Fragment>
@@ -356,6 +364,7 @@ export const NextStaticSearch: React.FC<Partial<INextStaticSearch>> = (
       {config.searchBoxType == "inline" &&
         search.length > 0 &&
         isMounted &&
+        inlineContainer &&
         createPortal(
           <div
             className="rstse__search_bar_inline"
@@ -368,7 +377,7 @@ export const NextStaticSearch: React.FC<Partial<INextStaticSearch>> = (
               results={results}
             />
           </div>,
-          document.getElementById("rstse__search_bar_id")
+          inlineContainer
         )}
     </React.Fragment>
   );

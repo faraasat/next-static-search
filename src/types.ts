@@ -8,6 +8,7 @@ declare global {
         options?: IPagefindSearchOptions
       ) => Promise<IPagefindResults>;
       preload: () => Promise<void>;
+      options?: (opts: { baseUrl?: string }) => Promise<void> | void;
     };
   }
 }
@@ -67,4 +68,21 @@ export interface INextStaticSearch {
   notFoundMessage?: string;
   searchBoxType: "modal" | "inline";
   pagesToIgnore?: Array<string>;
+  /**
+   * Where the Pagefind bundle is served from.
+   *
+   * Defaults to `/_next/static/pagefind/pagefind.js`. Override it when the
+   * site is served under a `basePath` (e.g. GitHub Pages), where the bundle
+   * lives at `/<basePath>/_next/static/pagefind/pagefind.js`.
+   */
+  pagefindPath?: string;
+  /**
+   * Site root that Pagefind should resolve result URLs against.
+   *
+   * Pagefind infers this from wherever its bundle is served from, which is
+   * wrong whenever the index is emitted somewhere other than `<site>/pagefind`
+   * (for a Next.js export it lives under `_next/static`). Set this to your
+   * `basePath`, or `/` at the domain root.
+   */
+  baseUrl?: string;
 }
