@@ -16,7 +16,7 @@ export default function Page() {
           CLI as a dev dependency. Pagefind indexes the exported HTML, so it
           runs after the Next.js build rather than during it.
         </p>
-        <pre>{`npm install next-static-search
+        <pre tabIndex={0}>{`npm install next-static-search
 npm install -D pagefind`}</pre>
         <p>
           The component requires React 17 or newer and works with both the App

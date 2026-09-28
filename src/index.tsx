@@ -223,9 +223,12 @@ const SearchBar: React.FC<{
       aria-label={config.ariaLabel || "Search"}
       role="combobox"
       aria-expanded={expanded}
-      aria-controls={listboxId}
+      // Only reference the listbox while it is actually rendered: pointing
+      // aria-controls/aria-activedescendant at an id that does not exist is a
+      // critical aria-valid-attr-value violation.
+      {...(expanded ? { "aria-controls": listboxId } : {})}
       aria-autocomplete="list"
-      aria-activedescendant={activeId}
+      {...(expanded && activeId ? { "aria-activedescendant": activeId } : {})}
     />
 
     {isMac != null && (
