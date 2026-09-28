@@ -8,6 +8,7 @@ declare global {
         options?: IPagefindSearchOptions
       ) => Promise<IPagefindResults>;
       preload: () => Promise<void>;
+      options?: (opts: { baseUrl?: string }) => Promise<void> | void;
     };
   }
 }
@@ -57,6 +58,17 @@ interface IPagefindResults {
   query: string;
 }
 
+export interface SearchResultItem {
+  /** Page title the sub-result belongs to. */
+  pageTitle: string;
+  /** Heading/section title. */
+  title: string;
+  /** Resolved URL. */
+  url: string;
+  /** HTML excerpt with <mark> around matches. */
+  excerpt: string;
+}
+
 export interface INextStaticSearch {
   placeholder?: string;
   searchClassName?: string;
@@ -67,4 +79,38 @@ export interface INextStaticSearch {
   notFoundMessage?: string;
   searchBoxType: "modal" | "inline";
   pagesToIgnore?: Array<string>;
+  /**
+   * Where the Pagefind bundle is served from.
+   *
+   * Defaults to `/_next/static/pagefind/pagefind.js`. Override it when the
+   * site is served under a `basePath` (e.g. GitHub Pages), where the bundle
+   * lives at `/<basePath>/_next/static/pagefind/pagefind.js`.
+   */
+  pagefindPath?: string;
+  /**
+   * Wait this long after the last keystroke before querying, in ms.
+   *
+   * Pagefind loads index shards per query, so firing on every keystroke is
+   * wasteful. Default `150`. Set `0` to disable.
+   */
+  debounce?: number;
+  /** Cap the number of pages shown. Default `20`. */
+  maxResults?: number;
+  /** Stacking order of the modal. Default `9999`. */
+  zIndex?: number;
+  /** Render your own result row. */
+  renderResult?: (item: SearchResultItem, index: number) => React.ReactNode;
+  /** Called when a result is chosen (keyboard or click). */
+  onSelect?: (item: SearchResultItem) => void;
+  /** Accessible label for the search input. Default `"Search"`. */
+  ariaLabel?: string;
+  /**
+   * Site root that Pagefind should resolve result URLs against.
+   *
+   * Pagefind infers this from wherever its bundle is served from, which is
+   * wrong whenever the index is emitted somewhere other than `<site>/pagefind`
+   * (for a Next.js export it lives under `_next/static`). Set this to your
+   * `basePath`, or `/` at the domain root.
+   */
+  baseUrl?: string;
 }
