@@ -44,7 +44,7 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: /next-static-search
           NEXT_PUBLIC_APTABASE_KEY: ${{ vars.APTABASE_APP_KEY || 'A-EU-2835526838' }}
-          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID || 'G-R53X8NZ5JN' }}
         run: npm run build
 
       - name: Configure Pages

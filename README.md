@@ -87,24 +87,28 @@ directory.
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `searchBoxType` | `"modal" \| "inline"` | `"modal"` | Overlay with ⌘K, or results rendered under the input. |
+| `searchBoxType` | `"modal" \| "inline"` | `"modal"` | Overlay with ⌘K, or results under the input. |
 | `placeholder` | `string` | `"🚀 Search this Site..."` | Input placeholder. |
-| `pagesToIgnore` | `string[]` | `["404", "500"]` | Page titles to drop from results. Merged with the defaults. |
+| `ariaLabel` | `string` | `"Search"` | Accessible name for the input. |
+| `pagesToIgnore` | `string[]` | `["404", "500"]` | Page titles to drop. Merged with the defaults. |
+| `maxResults` | `number` | `20` | Cap on pages shown. |
+| `debounce` | `number` | `150` | Ms to wait after the last keystroke. `0` disables. |
 | `pagefindPath` | `string` | `/_next/static/pagefind/pagefind.js` | Where the Pagefind bundle is served from. |
-| `baseUrl` | `string` | — | Site root that result URLs resolve against. Set this whenever the index is not at `<site>/pagefind`. |
+| `baseUrl` | `string` | — | Site root that result URLs resolve against. |
+| `zIndex` | `number` | `9999` | Stacking order of the modal. |
 | `searchClassName` | `string` | — | Extra class on the search box. |
-| `macSymbol` / `windowsSymbol` | `ReactNode` | `"Cmd"` / `"Ctrl"` | Modifier hint shown beside the input. |
-| `errorMessage` | `string` | … | Shown when the index cannot be loaded. |
-| `notFoundMessage` | `string` | … | Shown when a query has no matches. |
+| `macSymbol` / `windowsSymbol` | `ReactNode` | `"⌘"` / `"Ctrl"` | Shortcut hint. |
+| `errorMessage` / `notFoundMessage` | `string` | … | Empty and error copy. |
+| `renderResult` | `(item, index) => ReactNode` | — | Render your own result row. |
+| `onSelect` | `(item) => void` | — | Fired when a result is chosen. |
 
 ### Sites served under a base path
 
 If your site is not at the domain root — a GitHub Pages project site, or
-anything with `basePath` — point the component at the real bundle location:
+anything with `basePath` — set both:
 
 ```tsx
 <NextStaticSearch
-  searchBoxType="modal"
   pagefindPath="/my-docs/_next/static/pagefind/pagefind.js"
   baseUrl="/my-docs/"
 />
@@ -120,7 +124,53 @@ result links to `/_next/static/<page>` instead of `/<page>`.
 | Key | Action |
 | --- | --- |
 | `⌘K` / `Ctrl K` | Open the search modal |
-| `Esc` | Close it |
+| `↑` `↓` | Move through results (wraps) |
+| `Home` / `End` | Jump to first / last |
+| `↵` | Open the highlighted result |
+| `Esc` | Close |
+
+## Accessibility
+
+The search box follows the ARIA **combobox** pattern rather than being a plain
+input:
+
+- `role="combobox"` with `aria-expanded`, `aria-controls` and
+  `aria-autocomplete="list"`.
+- Results are a `role="listbox"` of `role="option"`, and the highlighted one is
+  tracked with `aria-activedescendant` — so screen readers announce it without
+  focus ever leaving the input.
+- The modal is a labelled `role="dialog"` with `aria-modal`.
+- Loading and empty states are announced via `role="status"`; errors via
+  `role="alert"`.
+
+## Performance
+
+Queries are **debounced by 150ms**, and responses from superseded queries are
+discarded. Pagefind fetches index shards per query, so firing on every
+keystroke wastes bandwidth and can render stale results out of order.
+
+## Theming
+
+Every colour is a CSS custom property, and the defaults follow
+`prefers-color-scheme`:
+
+```css
+.rstse__search_bar,
+.rstse__portal,
+.rstse__inline {
+  --rstse-bg: #fff;
+  --rstse-fg: #111827;
+  --rstse-accent: #4f46e5;
+  --rstse-mark: #fde68a;
+  --rstse-radius: 12px;
+}
+```
+
+## Responsive
+
+Below 640px the modal goes full screen, the keyboard hints and the ⌘K badge are
+hidden (meaningless without a physical keyboard), excerpts get an extra line,
+and the panel respects `env(safe-area-inset-bottom)`.
 
 ## Styling
 
@@ -128,14 +178,15 @@ result links to `/_next/static/<page>` instead of `/<page>`.
 import "next-static-search/style.css";
 ```
 
-Classes are prefixed with `rstse__`, so they are safe to target directly:
-
 | Class | Element |
 | --- | --- |
-| `.rstse__search_bar` | The input wrapper |
-| `.rstse__search_portal` | Modal overlay |
-| `.rstse__search_result_pane` | Results list |
-| `.rstse__search_loading` | Loading state |
+| `.rstse__search_bar` | Input wrapper |
+| `.rstse__portal` / `.rstse__panel` | Modal overlay and panel |
+| `.rstse__results` / `.rstse__result` | Listbox and rows |
+| `.rstse__result.is-active` | Highlighted row |
+| `.rstse__group` | Page-title group heading |
+| `.rstse__loading` / `.rstse__empty` / `.rstse__error` | States |
+| `.rstse__hints` | Keyboard hint footer |
 
 ## Contributing
 

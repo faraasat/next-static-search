@@ -1,76 +1,63 @@
 import React from "react";
 
+/**
+ * Wires up the shortcut, platform detection and open/close behaviour for the
+ * search UI.
+ */
 export const useInitialMounting = (
   clearSearch: () => void,
   searchBoxType: "modal" | "inline"
 ) => {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [isOpen, setIsOpen] = React.useState(false);
   const [isMac, setIsMac] = React.useState<boolean | null>(null);
-  const [isMounted, setIsMounted] = React.useState<boolean>(false);
+  const [isMounted, setIsMounted] = React.useState(false);
 
-  const handleSearchClose = (ev: MouseEvent) => {
-    if(searchBoxType == "inline") {
-      // console.log(ev)
-    }
-  };
+  // Kept in refs so the listeners below can stay registered once, without
+  // going stale.
+  const clearRef = React.useRef(clearSearch);
+  clearRef.current = clearSearch;
+  const typeRef = React.useRef(searchBoxType);
+  typeRef.current = searchBoxType;
 
-  const handleKeyDown = React.useCallback((e: KeyboardEvent) => {
-    if ((e?.ctrlKey || e?.metaKey) && e.key === "k") {
-      e.preventDefault();
-      setIsOpen(true);
-
-      let timeout = setTimeout(() => {
-        document
-          .getElementById(
-            searchBoxType == "inline"
-              ? "rstse__search_bar_main_id"
-              : "rstse__search_bar_input_id"
-          )
-          ?.focus();
-        clearTimeout(timeout);
-      }, 50);
-    }
-  }, []);
-
-  const handlePortalClose = React.useCallback((ev: MouseEvent | null) => {
-    if (
-      searchBoxType == "modal" &&
-      ev &&
-      (ev as any).target.id == "rstse__search_portal_id"
-    ) {
-      clearSearch();
-    }
+  const close = React.useCallback(() => {
+    setIsOpen(false);
+    clearRef.current();
   }, []);
 
   React.useEffect(() => {
     setIsMounted(true);
+    setIsMac(
+      typeof navigator !== "undefined" &&
+        /mac|iphone|ipad|ipod/i.test(navigator.userAgent)
+    );
 
-    const isMac = navigator.userAgent.toUpperCase().includes("MAC");
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsOpen(true);
+        // Focus after the portal has rendered.
+        requestAnimationFrame(() => {
+          document
+            .getElementById(
+              typeRef.current === "inline"
+                ? "rstse__search_bar_main_id"
+                : "rstse__search_bar_input_id"
+            )
+            ?.focus();
+        });
+        return;
+      }
 
-    setIsMac(isMac ? true : false);
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("click", handleSearchClose);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("click", handleSearchClose);
+      // Escape closes the modal. This was previously unhandled, so the only
+      // way out was clicking the backdrop.
+      if (e.key === "Escape") close();
     };
-  }, []);
 
-  React.useEffect(() => {
-    if (isMounted) {
-      const searchModal = document.getElementById("rstse__search_portal_id");
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [close]);
 
-      searchModal?.addEventListener("click", handlePortalClose);
-
-      return () => {
-        searchModal?.removeEventListener("click", handlePortalClose);
-      };
-    }
-  }, [isMounted]);
-
-  return { isMac, isMounted, isOpen, setIsOpen };
+  return { isMac, isMounted, isOpen, setIsOpen, close };
 };
 
 export default useInitialMounting;

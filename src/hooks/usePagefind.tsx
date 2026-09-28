@@ -7,7 +7,8 @@ const importPageFind = async (path: string) =>
 
 export const usePagefind = (
   pagefindPath = "/_next/static/pagefind/pagefind.js",
-  baseUrl?: string
+  baseUrl?: string,
+  debounceMs = 150
 ) => {
   const [search, setSearch] = React.useState<string>("");
   const [isError, setIsError] = React.useState<boolean>(false);
@@ -72,27 +73,71 @@ export const usePagefind = (
   }, [pagefindPath, baseUrl]);
 
   async function handleSearch(s: string) {
-    if (window.pagefind) {
-      const res = await window.pagefind.search(s);
+    if (!window.pagefind) return;
 
-      const result = [];
+    const res = await window.pagefind.search(s);
+    const result: Array<IPagefindResultData> = [];
 
-      for await (const d of res.results) {
-        const data = await d?.data();
-        result.push(data);
-      }
-
-      setResults(result);
+    for (const d of res.results) {
+      const data = await d?.data();
+      if (data) result.push(data);
     }
+
+    setResults(result);
   }
 
+  const debounceRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Guards against an earlier, slower query overwriting a newer one.
+  const queryIdRef = React.useRef(0);
+
+  React.useEffect(
+    () => () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    },
+    []
+  );
+
+  const runSearch = React.useCallback(
+    async (s: string, id: number) => {
+      if (!s) {
+        setResults([]);
+        setLoading(false);
+        return;
+      }
+      await handleSearch(s);
+      if (queryIdRef.current === id) setLoading(false);
+    },
+    // handleSearch only reads window.pagefind, which is stable once loaded.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  /**
+   * Pagefind fetches index shards per query, so firing on every keystroke is
+   * wasteful. Debounce, and drop responses from superseded queries.
+   */
   const onSearch = async (s: string) => {
     setSearch(s);
-    if (!isError) {
-      setLoading(true);
-      await handleSearch(s);
+    if (isError) return;
+
+    const id = ++queryIdRef.current;
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    if (!s) {
+      setResults([]);
       setLoading(false);
+      return;
     }
+
+    setLoading(true);
+
+    if (debounceMs <= 0) {
+      await runSearch(s, id);
+      return;
+    }
+
+    debounceRef.current = setTimeout(() => void runSearch(s, id), debounceMs);
   };
 
   return { isError, results, loading, onSearch, search, setSearch, setLoading };
