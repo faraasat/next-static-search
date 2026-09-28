@@ -33,7 +33,7 @@ export default function Home() {
 
       <section className="card">
         <h2>Usage</h2>
-        <pre>{`import { NextStaticSearch } from "next-static-search";
+        <pre tabIndex={0}>{`import { NextStaticSearch } from "next-static-search";
 import "next-static-search/style.css";
 
 export function Nav() {
@@ -42,7 +42,7 @@ export function Nav() {
         <p className="sub" style={{ marginTop: 16 }}>
           Then index the export, after <code>next build</code>:
         </p>
-        <pre>{`npx pagefind --site out --output-path out/_next/static/pagefind`}</pre>
+        <pre tabIndex={0}>{`npx pagefind --site out --output-path out/_next/static/pagefind`}</pre>
       </section>
 
       <Footer />

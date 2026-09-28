@@ -15,7 +15,7 @@ export default function Page() {
           The stylesheet is published separately so you can skip it entirely and
           write your own. Import it once, near your root layout.
         </p>
-        <pre>{`import "next-static-search/style.css";`}</pre>
+        <pre tabIndex={0}>{`import "next-static-search/style.css";`}</pre>
         <p>
           Every element carries an <code>rstse__</code> prefixed class name, and
           the outer search box also accepts a <code>searchClassName</code> prop

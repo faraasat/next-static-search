@@ -16,7 +16,7 @@ export default function Page() {
           default; set <code>searchBoxType</code> to <code>inline</code> to
           render results directly beneath the input instead.
         </p>
-        <pre>{`<NextStaticSearch
+        <pre tabIndex={0}>{`<NextStaticSearch
   searchBoxType="inline"
   placeholder="Search the docs"
   pagesToIgnore={["404", "500"]}
