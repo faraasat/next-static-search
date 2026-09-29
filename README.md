@@ -24,6 +24,57 @@
 
 ---
 
+## Upgrading from 1.x
+
+`2.0.0` rebuilds the search UI around the ARIA combobox pattern and adds
+keyboard navigation. `<NextStaticSearch />` keeps its props, but the rendered
+DOM and its classes changed, and there is one option you will probably want.
+
+### Custom CSS needs remapping
+
+| 1.x | 2.0 |
+| --- | --- |
+| `.rstse__search_bar` | `.rstse__search_bar` *(unchanged)* |
+| `.rstse__search_bar_input` | `.rstse__input` |
+| `.rstse__search_bar_keys` | `.rstse__kbd` |
+| `.rstse__search_bar_div` | `.rstse__kbd` |
+| `.rstse__search_portal` | `.rstse__portal` |
+| `.rstse__search_portal__hidden` | *(gone — use `.rstse__portal--open`)* |
+| `.rstse__search_result` | `.rstse__panel_body` |
+| `.rstse__search_result_pane` | `.rstse__results` |
+| `.rstse__search_result_pane_no_result` | `.rstse__empty` |
+| `.rstse__search_result_err` | `.rstse__error` |
+| `.rstse__search_loading` | `.rstse__loading` |
+| `.rstse__search_bar_inline` | `.rstse__inline` |
+| `.rstse-animate-fade-in` | *(gone — the modal animates itself)* |
+
+Results are now a `<ul role="listbox">` of `<a role="option">` rows
+(`.rstse__result`, `.rstse__result_title`, `.rstse__result_excerpt`), grouped by
+page title under `.rstse__group`. The highlighted row carries `.is-active`.
+
+Colours are CSS custom properties now, so prefer setting `--rstse-*` over
+rewriting rules.
+
+### Set `baseUrl` if your site is not at the domain root
+
+Pagefind resolves result URLs against wherever its own bundle is served from,
+and a Next.js export puts that under `_next/static`. Without `baseUrl`, every
+result links to `/_next/static/<page>` instead of `/<page>`:
+
+```tsx
+<NextStaticSearch
+  pagefindPath="/docs/_next/static/pagefind/pagefind.js"
+  baseUrl="/docs/"
+/>
+```
+
+This affected 1.x too; the option to fix it simply did not exist.
+
+### New, optional
+
+- `debounce` (default `150`ms), `maxResults` (default `20`), `zIndex`,
+  `ariaLabel`, `renderResult` and `onSelect`.
+
 ## Why
 
 Static exports have nowhere to run a search endpoint, and hosted search costs
