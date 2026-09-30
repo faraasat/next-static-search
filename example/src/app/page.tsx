@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Hero } from "@/components/hero";
 import { Footer } from "@/components/footer";
+import { Code } from "@/components/code";
 import { Search } from "@/components/search";
 
 export default function Home() {
@@ -33,16 +34,16 @@ export default function Home() {
 
       <section className="card">
         <h2>Usage</h2>
-        <pre tabIndex={0}>{`import { NextStaticSearch } from "next-static-search";
+        <Code language="tsx">{`import { NextStaticSearch } from "next-static-search";
 import "next-static-search/style.css";
 
 export function Nav() {
   return <NextStaticSearch searchBoxType="modal" />;
-}`}</pre>
+}`}</Code>
         <p className="sub" style={{ marginTop: 16 }}>
           Then index the export, after <code>next build</code>:
         </p>
-        <pre tabIndex={0}>{`npx pagefind --site out --output-path out/_next/static/pagefind`}</pre>
+        <Code language="tsx">{`npx pagefind --site out --output-path out/_next/static/pagefind`}</Code>
       </section>
 
       <Footer />
