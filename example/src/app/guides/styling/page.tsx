@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Footer } from "@/components/footer";
+import { Code } from "@/components/code";
 import { Search } from "@/components/search";
 
 export const metadata = { title: "Styling" };
@@ -15,7 +16,7 @@ export default function Page() {
           The stylesheet is published separately so you can skip it entirely and
           write your own. Import it once, near your root layout.
         </p>
-        <pre tabIndex={0}>{`import "next-static-search/style.css";`}</pre>
+        <Code language="tsx">{`import "next-static-search/style.css";`}</Code>
         <p>
           Every element carries an <code>rstse__</code> prefixed class name, and
           the outer search box also accepts a <code>searchClassName</code> prop

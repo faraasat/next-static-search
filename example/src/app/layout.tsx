@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@/components/analytics";
+import { TopNav } from "@/components/topnav";
 import "next-static-search/style.css";
 import "./globals.css";
 
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <TopNav pkg="next-static-search" />
         {children}
         <Analytics packageName="next-static-search" />
       </body>

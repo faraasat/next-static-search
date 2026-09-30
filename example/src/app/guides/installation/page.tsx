@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Footer } from "@/components/footer";
+import { Code } from "@/components/code";
 import { Search } from "@/components/search";
 
 export const metadata = { title: "Installation" };
@@ -16,8 +17,8 @@ export default function Page() {
           CLI as a dev dependency. Pagefind indexes the exported HTML, so it
           runs after the Next.js build rather than during it.
         </p>
-        <pre tabIndex={0}>{`npm install next-static-search
-npm install -D pagefind`}</pre>
+        <Code language="tsx">{`npm install next-static-search
+npm install -D pagefind`}</Code>
         <p>
           The component requires React 17 or newer and works with both the App
           Router and the Pages Router, as long as the site is statically
