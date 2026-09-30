@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/faraasat/next-static-search/compare/v1.0.15...v2.0.0) (2026-09-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* notes from BREAKING CHANGE commit footers which none of these
+commits carry — so the generated changelog would ship a major with no
+migration guidance at all.
+
+The largest break is invisible from the API: the stylesheets were rewritten,
+so almost every published class name is gone. Anyone with custom CSS would
+find it silently stop applying. Each guide gives the old -> new mapping.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+
+### Features
+
+* keyboard navigation, combobox a11y, debouncing, responsive UI ([3fb37be](https://github.com/faraasat/next-static-search/commit/3fb37be7e79c5ade217206f2083cf53c9777a100))
+
+
+### Bug Fixes
+
+* stop referencing a listbox that does not exist ([6557e97](https://github.com/faraasat/next-static-search/commit/6557e97c4e4150f663ff47a7c68a9bab84383b54))
+
+
+* document the 1.x -> 2.0 breaking changes ([e8ef125](https://github.com/faraasat/next-static-search/commit/e8ef1252a20077e900f2569d2041423f1ecc326c))
+
 ### 1.0.15 (2025-07-20)
 
 ### 1.0.14 (2025-07-20)
